@@ -181,13 +181,21 @@ void publishCounter() {
 
 
 /**
+ * Publish the current uptime.
+ */
+void publishUptime() {
+  MQTT::Publish publish("/vvm/visitorcounter/uptime", String(millis()/1000));
+  publish.set_retain(true);
+  pubSubClient.publish(publish);
+}
+
+
+/**
  * Connect to the broker and regularly post the module's uptime and the counter.
  */
 void updateBroker() {
   static unsigned long lastPost = 0;
   static unsigned long lastConnect = 0;
-  char buffer[256];
-  unsigned long now;
   
   if (WiFi.status() == WL_CONNECTED) {
     if (!pubSubClient.connected()
@@ -207,10 +215,8 @@ void updateBroker() {
     }
     if (pubSubClient.connected()
         && (lastPost == 0 || millisElapsed(lastPost, millis()) > 60000)) {
-      now = millis() / 1000;
-      snprintf(buffer, sizeof(buffer), "%d:%02d:%02d", now/3600, now/60 % 60, now % 60);
-      pubSubClient.publish("/vvm/visitorcounter/uptime", buffer);
       //pubSubClient.publish("/vvm/visitorcounter/cycles", String(cycles));
+      publishUptime();
       publishCounter();
       lastPost = millis();
     }

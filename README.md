@@ -19,11 +19,29 @@ turn off once a second as a heartbeat, and turn off while the GPIO2 input is low
 The circuit used to connect the light barrier to the module is in
 [schematics](schematics).
 
+## MQTT Messages
+
+The sketch will post the following messages.  The sketch will post the messages regularly
+(approximately every 60 seconds).
+
+### /vvm/visitorcounter/counter
+
+The current counter value.  The message is posted with retain=true, so new clients will
+receive the current counter value immediately.  
+
+### /vvm/visitorcounter/uptime
+
+Seconds since the module booted.  The value might not be accurate, but allows a client
+to gauge whether the module is active and working.  The module registers this message
+with a value of 0 as its last-will-and-testament, so when the module goes offline,
+the broker will post an uptime of 0.  Both messages are posted with retain=true, so
+clients connecting to the broker will learn the current status of the module immediately.
+
 ## Test Client
 
-As a quick and dirty way to see messages posted by the sketch, you can use the Paho
-test client in [paho-testclient](paho-testclient).  To set up your Python, you should
-use [Virtualenv](https://virtualenv.pypa.io/en/latest/).
+As a quick way to see messages posted by the sketch, you can use the Paho test client in
+[paho-testclient](paho-testclient).  To set up your Python, you should use 
+Virtualenv](https://virtualenv.pypa.io/en/latest/).
 
 Example setup:
 ```bash
