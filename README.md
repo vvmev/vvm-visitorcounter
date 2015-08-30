@@ -41,7 +41,7 @@ clients connecting to the broker will learn the current status of the module imm
 
 As a quick way to see messages posted by the sketch, you can use the Paho test client in
 [paho-testclient](paho-testclient).  To set up your Python, you should use 
-Virtualenv](https://virtualenv.pypa.io/en/latest/).
+[Virtualenv](https://virtualenv.pypa.io/en/latest/).
 
 Example setup:
 ```bash
